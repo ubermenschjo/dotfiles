@@ -1,0 +1,27 @@
+# jumanji configuration
+
+# search engines
+searchengine google http://www.google.co.kr/search?q=%s
+
+# browser settings
+set homepage http://www.google.co.kr
+set auto_save 60
+set single_instance true
+
+# Use privoxy for adblocking
+#set proxy localhost:8118 
+
+# look n feel
+set font monospace normal 9
+#set stylesheet file:///home/inxs/.config/jumanji/style.css 
+
+# follow hints
+script ~/.config/jumanji/scripts/hints.js
+
+# downloads
+set download_dir ~/dl/
+set download_command urxvt -e sh -c "wget --load-cookies ~/.config/jumanji/cookies '%s' -O '%s'";
+# keybindings
+map <C-,> nav_history previous
+map <C-.> nav_history next
+bmap ^DD$ quit

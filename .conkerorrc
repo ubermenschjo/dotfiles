@@ -1,0 +1,359 @@
+url_remoting_fn = load_url_in_new_buffer;
+
+session_pref("xpinstall.whitelist.required", false);
+
+url_completion_use_history = true;
+
+define_browser_object_class(
+    "history-url", null, 
+    function (I, prompt) {
+        check_buffer (I.buffer, content_buffer);
+        var result = yield I.buffer.window.minibuffer.read_url(
+            $prompt = prompt,  $use_webjumps = false, $use_history = true, $use_bookmarks = false);
+        yield co_return (result);
+    });
+
+interactive("find-url-from-history",
+            "Find a page from history in the current buffer",
+            "find-url",
+            $browser_object = browser_object_history_url);
+
+interactive("find-url-from-history-new-buffer",
+            "Find a page from history in the current buffer",
+            "find-url-new-buffer",
+            $browser_object = browser_object_history_url);
+
+define_key(content_buffer_normal_keymap, "h", "find-url-from-history-new-buffer");
+define_key(content_buffer_normal_keymap, "H", "find-url-from-history");
+session_pref('browser.history_expire_days', 3);
+
+
+
+///from emacs-fu
+//allow for 'contrib' stuff
+load_paths.unshift("chrome://conkeror-contrib/content/");
+
+// teach me something whenever I start my browser
+homepage = "http://en.wikipedia.org/wiki/Special:Random";
+
+// give me new tabs; open buffers (tabs) in the background
+require("new-tabs.js");
+require("clicks-in-new-buffer.js");
+clicks_in_new_buffer_target = OPEN_NEW_BUFFER_BACKGROUND; 
+clicks_in_new_buffer_button = 1; //  midclick links in new buffers with
+
+// auto completion in the minibuffer
+minibuffer_auto_complete_default = true;
+url_completion_use_history = true; // should work since bf05c87405
+url_completion_use_bookmarks = true;
+
+require("mode-line.js");
+// funky icons in the modeline
+require("mode-line-buttons.js");
+mode_line_add_buttons(standard_mode_line_buttons, true);
+
+// we'd like to see the # of buffers being loaded 
+add_hook("mode_line_hook", mode_line_adder(loading_count_widget), true);
+// we don't need a clock
+remove_hook("mode_line_hook", mode_line_adder(clock_widget));
+
+// some bookmarks
+define_webjump("efu",   "http://emacs-fu.blogspot.com");
+define_webjump("knou",	"http://knou.ac.kr");
+define_webjump("funz",	"http://funz.kr");
+
+// query
+define_webjump("so",    "http://stackoverflow.com/search?q=%s");
+define_webjump("yts",   "http://www.youtube.com/results?search_query=%s&aq=f");
+
+
+editor_shell_command = "emacsclient -c";
+
+// copy url with C-c u
+interactive("copy-url",
+            "Copy the current buffer's URL to the clipboard",
+            function(I) {
+		var text = I.window.buffers.current.document.location.href;
+		writeToClipboard(text);
+		I.window.minibuffer.message("copied: " + text);
+            }
+	   );
+define_key(default_global_keymap, "C-c u", "copy-url");
+
+
+// reload conkerorrc with C-c r
+interactive("reload-config", "reload conkerorrc",
+	    function(I) {
+		load_rc();
+		I.window.minibuffer.message("config reloaded");
+	    }
+	   );
+define_key(default_global_keymap, "C-c r", "reload-config");
+
+// org-protocol stuff
+function org_capture (url, title, selection, window) {
+    var cmd_str =
+        'emacsclient \"org-protocol:/capture:/w/'+url+'/'+title+'/'+selection+'\"';
+    if (window != null) {
+	window.minibuffer.message('Issuing ' + cmd_str);
+    }
+    shell_command_blind(cmd_str);
+}
+
+interactive("org-capture", "Clip url, title, and selection to capture via org-protocol",
+            function (I) {
+		org_capture(encodeURIComponent(I.buffer.display_uri_string),
+                            encodeURIComponent(I.buffer.document.title),
+                            encodeURIComponent(I.buffer.top_frame.getSelection()),
+                            I.window);
+            });
+// capture with C-c c
+define_key(content_buffer_normal_keymap, "C-c c", "org-capture");
+
+//Open Middle-Clicked Links in New Buffers
+require("clicks-in-new-buffer.js");
+
+//You can control whether buffers are created in the foreground or background (foreground is default).
+// Set to either OPEN_NEW_BUFFER or OPEN_NEW_BUFFER_BACKGROUND
+clicks_in_new_buffer_target = OPEN_NEW_BUFFER_BACKGROUND; // Now buffers open in background.
+
+//You can control the mouse button which triggers buffer creation (middle is default).
+// Set to 0 = left mouse, 1 = middle mouse, 2 = right mouse
+clicks_in_new_buffer_button = 2; //  Now right mouse follows links in new buffers.
+
+// selection searches
+function create_selection_search(webjump, key) {
+    interactive(webjump+"-selection-search",
+                "Search " + webjump + " with selection contents",
+                "find-url-new-buffer",
+                $browser_object = function (I) {
+                    return webjump + " " + I.buffer.top_frame.getSelection();});
+    define_key(content_buffer_normal_keymap, key.toUpperCase(), webjump + "-selection-search");
+
+    interactive("prompted-"+webjump+"-search", null,
+                function (I) {
+                    var term = yield I.minibuffer.read_url($prompt = "Search "+webjump+":",
+                                                           $initial_value = webjump+" ");
+                    browser_object_follow(I.buffer, FOLLOW_DEFAULT, term);
+                });
+    define_key(content_buffer_normal_keymap, key, "prompted-" + webjump + "-search");
+}
+// examples
+create_selection_search("google","l");
+create_selection_search("wikipedia","w");
+// create_selection_search("dictionary","d");
+// create_selection_search("myspace","y");
+// create_selection_search("amazon","a");
+create_selection_search("youtube","u");
+
+//This is best used in conjunction with the setting:
+minibuffer_read_url_select_initial = false;
+
+
+function darken_page (I) {
+    var styles='* { background: black !important; color: grey !important; }'+
+        ':link, :link * { color: #4986dd !important; }'+
+        ':visited, :visited * { color: #d75047 !important; }';
+    var document = I.buffer.document;
+    var newSS=document.createElement('link');
+    newSS.rel='stylesheet';
+    newSS.href='data:text/css,'+escape(styles);
+    document.getElementsByTagName("head")[0].appendChild(newSS);
+}
+
+interactive("darken-page", "Darken the page in an attempt to save your eyes.",
+            darken_page);
+
+//This is a common enough requirement for me that I bind it to C-d:
+define_key(content_buffer_normal_keymap, "C-d", "darken-page");
+
+//Default paths and filename transformations for downloads
+function suggest_save_path_from_file_name (file_name, buffer) {
+    var cwd = with_current_buffer(buffer, function (I) I.local.cwd);
+    var file = cwd.clone();
+    for (let re in replace_map) {
+        if (file_name.match(re)) {
+            if (replace_map[re].path) {
+                file = make_file(replace_map[re].path);
+            }
+            file_name = replace_map[re].transformer(file_name);
+        }
+    }
+    file.append(file_name);
+    return file.path;
+}
+//A snippet of my (aggressive) replace_map looks like this:
+var replace_map = {
+    ".": {
+        "transformer": function (filename) {
+            return filename.replace( /[\W ]+/g   , "-"   )
+                .replace( /^-+/       , ""    )
+                .replace( /-+$/       , ""    )
+                .replace( /-([^-]+)$/ , ".$1" )
+                .toLowerCase();
+        }
+    },
+    "\.torrent$": {
+        "path": "/media-files/",
+        "transformer": function (filename) {
+            return filename.replace( /isohunt-/i, "" );
+        }
+    }
+};
+//Default actions will probably follow.
+//6.2. Remember the last save directory for downloads
+{
+    let _save_path = get_home_directory();
+
+    function update_save_path(info) {
+	_save_path = info.target_file.parent.path;
+    }
+
+    add_hook("download_added_hook", update_save_path);
+
+    suggest_save_path_from_file_name = function (filename, buffer) {
+	let file = make_file(_save_path);
+	file.append(filename);
+	return file.path;
+    }
+}
+
+//Subscribe to Atom/RSS feeds (google reader)
+function subscribe_feed(I){
+    var f=false;
+    var reader = 'http://google.com/reader/view/feed/';
+    var document= I.buffer.document;
+    var ls=document.getElementsByTagName("link");
+    for(var i=0,l;l=ls[i];i++){
+        var t=l.getAttribute('type');
+        var r=l.getAttribute('rel');
+        if(t&&(t=='application/rss+xml'||t=='application/atom+xml')&&r&&r=='alternate'){
+            var h= l.getAttribute('href');
+            if(h.indexOf('http')!=0){
+                var p=(h.indexOf('/')!=0)?'/':document.location.pathname;
+                h='http://'+document.location.hostname+p+h;
+            }
+            document.location=reader+h;
+            f=true;
+        }}
+    if(!f) I.minibuffer.message('Oops. Can\'t find a feed.');
+};
+function subscribe_feed_all(I){
+    var document=I.buffer.document;
+    var reader = 'http://google.com/reader/view/feed/';
+    var el=document.createElement('div');
+    el.style.zIndex=10000;
+    el.style.position='absolute';
+    el.style.padding='2em';
+    el.style.top=0;
+    el.style.backgroundColor='#ffffcc';
+    el.style.border='1px solid #008000';
+    el.style.color='#000 !important';
+    el.style.fontFamily='Arial, sans-serif';
+    el.style.textAlign='left';
+    el.innerHTML='View the following feeds in Google Reader:';
+    var found = false;
+    var links = document.getElementsByTagName('link');
+    for (var i = 0, link;link = links[i];i++) {
+        var type = link.getAttribute('type');
+        var rel = link.getAttribute('rel');
+        var title = link.getAttribute('title');
+        if (type && (type == 'application/rss+xml' || type == 'application/atom+xml') && rel && rel == 'alternate'){
+            var href = link.getAttribute('href');
+            if (!href.match(/^http/)){
+                var path = (href.match(/^\//)) ? '/' : document.location.pathname;
+                href='http://' + document.location.hostname + path + href;
+            }
+            var previewLink = document.createElement('a');
+            previewLink.href = reader + href;
+            previewLink.innerHTML = ((title) ? title : '') + ' - ' + href;
+            previewLink.style.display='block';
+            previewLink.style.color='#00c';
+            previewLink.style.textDecoration='underline';
+            el.appendChild(previewLink);
+            found = true;
+        }}
+    var close=document.createElement('a');
+    close.innerHTML='hhh Hide this box hhh';
+    close.href='#';
+    close.style.display='block';
+    close.style.marginTop='2em';
+    close.style.color='#00c';
+    close.style.textDecoration='underline';
+    close.addEventListener('click',function() {
+        el.style.display='none';
+        return false;
+    }, true);
+    el.appendChild(close);
+    function AddFeedBox() {
+        document.body.insertBefore(el, document.body.firstChild);
+        el.scrollIntoView();
+    }
+    if (!found) I.minibuffer.message('Oops. Can\'t find any feeds for this page.');
+    else void(AddFeedBox());
+};
+interactive("subscribe-feed", "C-u Subscribes to first encountered feed."
+            + "C-u C-u Pops-up a box with all available feeds on the page."
+            + "It is oriented towards google-reader but could potentially be adapted to other sites by changing the 'reader' var.",
+            alternates(subscribe_feed, subscribe_feed_all)
+	   );
+
+define_key(default_global_keymap, "C-c s", "subscribe-feed");
+
+//7.2. Dictionary Search
+function dict_definition(I){
+    check_buffer(I.buffer, content_buffer);
+    let dict_url = 'http://www.dict.org/bin/Dict?Form=Dict2&Database=*&Query='+
+        encodeURIComponent(
+            yield I.minibuffer.read(
+                $prompt = "Dict: ",
+                $initial_value = I.buffer.top_frame.getSelection()));
+    browser_object_follow(I.buffer, OPEN_NEW_BUFFER, dict_url);
+    unfocus(I.window, I.buffer);
+}
+function dict_substring(I){
+    check_buffer(I.buffer, content_buffer);
+    let dict_url = 'http://www.dict.org/bin/Dict?Form=Dict2&Strategy=substring&Database=*&Query='+
+        encodeURIComponent(
+            yield I.minibuffer.read(
+                $prompt = "Dict (substring): ",
+                $initial_value = I.buffer.top_frame.getSelection()));
+    browser_object_follow(I.buffer, OPEN_NEW_BUFFER, dict_url);
+    unfocus(I.window, I.buffer);
+}
+function dict_Levenshtein(I){
+    check_buffer(I.buffer, content_buffer);
+    let dict_url = 'http://www.dict.org/bin/Dict?Form=Dict2&Strategy=lev&Database=*&Query='+
+        encodeURIComponent(
+            yield I.minibuffer.read(
+                $prompt = "Dict (Levenshtein): ",
+                $initial_value = I.buffer.top_frame.getSelection()));
+    browser_object_follow(I.buffer, OPEN_NEW_BUFFER, dict_url);
+    unfocus(I.window, I.buffer);
+}
+
+interactive("dict",
+            "Definitions of the word from dict.org in all supported dictionaries."
+            + "C-u triggers lookup for words with Levenshtein distance 1."
+            + "C-u C-u triggers lookup for words which contain the given word as a substring.",
+            alternates(dict_definition, dict_Levenshtein, dict_substring)
+           );
+define_key(default_global_keymap, "f5", "dict");
+
+// last updated September 22, 2009
+define_browser_object_class(
+    "tinyurl", "Get a tinyurl for the current page",
+    function (I, prompt) {
+        check_buffer(I.buffer, content_buffer);
+        let createurl = 'http://tinyurl.com/api-create.php?url=' +
+            encodeURIComponent(
+                load_spec_uri_string(
+                    load_spec(I.buffer.top_frame)));
+        try {
+            var content = yield send_http_request(
+                load_spec({uri: createurl}));
+            yield co_return(content.responseText);
+        } catch (e) { }
+    });
+
+define_key(content_buffer_normal_keymap, "* q", "browser-object-tinyurl");

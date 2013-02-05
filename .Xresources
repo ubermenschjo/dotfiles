@@ -1,0 +1,144 @@
+! Xft settings ---------------------------------------------------------------
+
+Xft.dpi:        96
+Xft.antialias:  true
+Xft.rgba:       rgb
+Xft.hinting:    true
+Xft.hintstyle:  hintslight
+Xft.lcdfilter:    lcddefault
+
+Xcursor.theme:   Vanilla-DMZ-AA
+
+!XTerm*faceName: Liberation Mono
+XTerm*faceSize: 8
+
+XTerm*background: #121212
+XTerm*foreground: white
+XTerm*pointerColor: red
+XTerm*pointerColorBackground: black
+XTerm*cursorColor: navy
+XTerm*internalBorder: 3
+XTerm*loginShell: true
+XTerm*scrollBar: false
+XTerm*scrollKey: true
+XTerm*saveLines: 1000
+XTerm*multiClickTime: 250
+
+
+
+!-------------------------------------------------------------------------------
+!
+!	U R X V T 
+!
+!
+URxvt*depth: 32
+URxvt*background: rgba:0000/0000/0000/dddd
+URxvt*inheritPixmap: true
+URxvt*tintColor:  grey
+URxvt*shading: 40
+URxvt*termName:         rxvt-unicode
+URxvt*geometry: 			101x25
+!URxvt*background:       	#000000
+URxvt*foreground:       	green
+!URxvt*inheritPixmap:    	true
+!URxvt*reverseVideo:			false
+!URxvt*tintColor:        	#1c1c1c
+!URxvt*shading:	        	10!trans=100, 0=opaque
+URxvt*fading:	        	10 !term unfocus
+!URxvt.font:	     		-lfp-gamow-medium-r-normal-*-*-90-*-*-c-*-iso8859-5
+!URxvt.font:			xft:Consolas:autohint=true:antialias=true:size=10
+!URxvt.font:             xft:Liberation Mono:autohint=true:antialias=true:size=8
+!URxvt.boldFont: 			xft:Bitstream Vera Sans mono:size=9
+!URxvt.italicFont: 			-lfp-gamow-medium-r-normal-*-*-90-*-*-c-*-iso8859-5
+!URxvt.boldItalicFont: 		-lfp-gamow-medium-r-normal-*-*-90-*-*-c-*-iso8859-5
+!URxvt.font:				xft:Terminus:pixelsize=20
+!URxvt.font:				xft:Consolas:pixelsize=16
+!URxvt.font:					xft:Monospace:pixelsize=21
+!URxvt.font:  				xft:matto:antialias=true:size=8
+URxvt.font:				xft:Bitstream Vera Sans mono:size=9,xft:Daramgee:fixelsize=10,xft:Kochi-mincho-subst:antialias=false
+URxvt*scrollBar:		false
+URxvt*scrollWithBuffer:		true
+URxvt*scrollBar_floating:	true
+URxvt*scrollBar_right:		false
+URxvt*scrollColor:			#000000
+URxvt*saveLines:			5500
+URxvt*cursorColor:			#d8d8d8
+URxvt*colorBD:				lightyellow
+URxvt*colorUL:				white
+URxvt*eightBitInput:		true
+URxvt*metaSendsEscape:		true
+URxvt.perl-ext-common: default,matcher,clipboard,xim-onthespot,url-select,keyboard-select
+!URxvt.urlLauncher: /home/ubermenschjo/.config/urxvt-to-uzbl.sh
+!URxvt.urlLauncher: /usr/bin/jumanji
+URxvt.url-select.launcher: chromium
+URxvt.url-select.underline: true
+URxvt.keysym.M-u: perl:url-select:select_next
+URxvt.keysym.M-Escape: perl:keyboard-select:activate
+URxvt.keysym.M-s: perl:keyboard-select:search
+URxvt.matcher.button: 2
+URxvt.matcher.pattern.1: \\bwww\\.[\\w-]\\.[\\w./?&@#-]*[\\w/-]
+URxvt*visualBell:			true
+URxvt*transparent:			true
+URxvt.preeditType: Root
+URxvt.inputMethod: ibus
+URxvt.preeditType: OnTheSpot
+!-------------------------------------------------------------------------------
+!
+!	C O L O R S
+!
+!
+!black
+!*color0: #222222
+!*color8: #808080
+!red
+!*color1: #4C4C4C
+!*color9: #EA8484
+!green
+!*color2: #87AF5F
+!*color10:#C7F09F
+!yellow
+!*color3: #FFAF5F
+!*color11:#FFCC9A
+!blue
+!*color4: #87AFD7
+!*color12:#A5CAEF
+!magenta
+!*color5: #8787AF
+!*color13:#A6A6DE
+!cyan
+!*color6: #5F8787
+!*color14:#69B2B2
+!white
+!*color7: #A0A0A0
+!*color15:#A0A0A0
+
+! -------------------------------------------------
+! C!oud
+! file:     .colors/woman
+! vim:nu:ai:si:et:ts=4:sw=4:ft=xdefaults:
+! -------------------------------------------------
+
+!black
+ *color0:  #222827
+ *color8:  #5D6F74
+!red
+ *color1:  #D5A8E3
+ *color9:  #CD749C
+!green
+ *color2:  #9C75DD
+ *color10: #63B0B0
+!yellow
+ *color3:  #9898AE
+ *color11: #C0C0DD
+!blue
+ *color4:  #654A96
+ *color12: #5786BC
+!magenta
+ *color5:  #625566
+ *color13: #3F3442
+!cyan
+ *color6:  #A9D1DF
+ *color14: #849DA2
+!white
+ *color7:  #E6EBE5
+ *color15: #D9D6CF

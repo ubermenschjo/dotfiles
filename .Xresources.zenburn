@@ -1,0 +1,43 @@
+URxvt.saveLines:9001
+URxvt.scrollBar: false
+URxvt*geometry: 96x30
+URxvt*.transparent: false
+
+URxvt.perl-ext-common:      default,clipboard,url-select,keyboard-select
+
+URxvt.url-select.launcher:  chromium
+URxvt.url-select.underline: true
+URxvt.keysym.M-u:           perl:url-select:select_next
+URxvt.keysym.M-Escape:      perl:keyboard-select:activate
+URxvt.keysym.M-s:           perl:keyboard-select:search
+URxvt.keysym.M-C-c:         perl:clipboard:copy
+URxvt.keysym.M-C-v:         perl:clipboard:paste
+
+!URxvt*font: xft:Envy Code R:pixelsize=10
+URxvt*font: xft:Bitstream Vera Sans mono:size=9,xft:Daramgee:fixelsize=10,xft:Kochi-mincho-subst:antialias=false,xft:Envy Code R:pixelsize=10
+*foreground: #d2d2ca
+*background: #2f2f2f
+!Black
+*color0:     #36393a
+*color8:     #627369
+!Red
+*color1:     #9e2828
+*color9:     #dd5e5e
+!Green
+*color2:     #57a748
+*color10:    #84c059
+!Yellow
+*color3:     #d1a747
+*color11:    #f6e47f
+!Blue
+*color4:     #42628a
+*color12:    #83afe1
+!Magenta
+*color5:     #a86e9f
+*color13:    #cc89bd
+!Cyan
+*color6:     #49b4b6
+color14:     #63e1e2
+!White
+*color7:     #d7d9cd
+*color15:    #f6f6f5

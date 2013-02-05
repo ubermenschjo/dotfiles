@@ -1,0 +1,47 @@
+exec rpws -i
+exec /usr/bin/rpws init 6 -k
+
+bind C-1 exec rpws 1
+bind C-2 exec rpws 2
+bind C-3 exec rpws 3
+bind C-4 exec rpws 4
+bind C-5 exec rpws 5
+bind C-6 exec rpws 6
+
+definekey top M-l exec ratpoison -c "select -" -c "gprev" -c "next"
+definekey top M-h exec ratpoison -c "select -" -c "gnext" -c "next"
+
+#switch between windows
+definekey top M-j next
+definekey top M-k prev
+
+#apps
+unbind c
+bind c exec urxvt -tr
+
+#bind j exec jumanji
+bind d exec dmenu_run
+bind e exec emacsclient -c
+
+#definekey top M-d exec dmenu_run
+
+# bind M-! to store the current frame layout in slot #1
+bind M-exclam exec ratpoison -c "setenv fs1 `ratpoison -c 'fdump'`"
+
+#bind M-1 to restore the frame layout in slot #1
+bind M-1 exec ratpoison -c "frestore `ratpoison -c 'getenv fs1'`"
+
+# Do the same for slot #2 and bind it to M-@ and M-2, respectively.
+bind M-at exec ratpoison -c "setenv fs2 `ratpoison -c 'fdump'`"
+bind M-2 exec ratpoison -c "frestore `ratpoison -c 'getenv fs2'`"
+
+# Give ourselves another slot on M-# and M-3, respectively.
+bind M-numbersign exec ratpoison -c "setenv fs3 `ratpoison -c 'fdump'`"
+bind M-3 exec ratpoison -c "frestore `ratpoison -c 'getenv fs3'`"
+
+#layouts [ ] [|] [|= [-] [+]
+definekey top M-F1 exec ratpoison -c "select -" -c "only" -c "next" -c "set border 0"
+definekey top M-F2 exec ratpoison -c "select -" -c "only" -c "hsplit" -c "next" -c "set border 10"
+definekey top M-F3 exec ratpoison -c "select -" -c "only" -c "hsplit" -c "next" -c "focusright" -c "next" -c "vsplit" -c "next" -c "set border 10"
+definekey top M-F4 exec ratpoison -c "select -" -c "only" -c "vsplit" -c "next" -c "set border 10"
+definekey top M-F5 exec ratpoison -c "select -" -c "only " -c "hsplit" -c next -c "vsplit" -c next -c "focusright" -c next -c "vsplit" -c "next" -c "set border 10"
