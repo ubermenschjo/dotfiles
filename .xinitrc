@@ -1,5 +1,6 @@
 #xrdb -load $HOME/.Xresources
 setxkbmap -option terminate:ctrl_alt_bksp &
+xsetroot -cursor_name left_ptr &
 
 usermodmap=$HOME/.Xmodmap
 userresources=$HOME/.Xresources
@@ -19,48 +20,42 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
 	unset f
 fi
 
-#sudo mount --bind $HOME $HOME/dev/git/dotfiles
-#wicd-gtk &
-#alsa-tray &
+[ -f /etc/xprofile ] && . /etc/xprofile
+[ -f ~/.xprofile ] && . ~/.xprofile
 
-xscreensaver -no-splash &
+eval $($HOME/.fehbg)
 
-#dropboxd &
-xcompmgr -cF &
-
-udiskie &
-
-xsetroot -cursor_name left_ptr
-
-eval $(cat ~/.fehbg)
-
-DEFAULT_SESSION=i3
+DEFAULT_SESSION=dswm
 
 case $1 in
-i3)
-	exec ck-launch-session dbus-launch i3
+enlightenment)
+	exec ck-launch-session  dbus-launch --sh-syntax --exit-with-session enlightenment_start
 	;;
-ratpoison)
-	exec ck-launch-session dbus-launch ratpoison
+kde)
+	exec ck-launch-session  dbus-launch --sh-syntax --exit-with-session startkde
 	;;
-stumpwm)
-	exec ck-launch-session dbus-launch stumpwm
+gnome)
+	exec ck-launch-session  dbus-launch --sh-syntax --exit-with-session gnome-session
 	;;
-musca)
-	exec ck-launch-session dbus-launch musca
+cinnamon)
+	exec ck-launch-session  dbus-launch --sh-syntax --exit-with-session gnome-session-cinnamon
 	;;
-herbstluftwm)
-	exec ck-launch-session dbus-launch herbstluftwm
+DSWM)
+	exec ck-launch-session  dbus-launch --sh-syntax --exit-with-session dswm --userinit $HOME/.dswm.d/init.lisp
 	;;
-awesome)
-	exec ck-launch-session dbus-launch awesome
+compiz)
+	exec ck-launch-session  dbus-launch --sh-syntax --exit-with-session /home/ubermenschjo/bin/start-compiz.sh 
 	;;
 xmonad)
-	trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --width 6 --transparent true --alpha 0 --tint 0x000000 --height 16 &  
-	xmobar $HOME/.xmonad/.xmobarrc &
-	exec ck-launch-session dbus-launch xmonad
+	PATH=$PATH:~/.cabal/bin:~/.xmonad/bin
+	tray &
+	$HOME/.cabal/bin/xmobar $HOME/.xmonad/xmobar-bottom.hs &
+	exec ck-launch-session dbus-launch --sh-syntax --exit-with-session xmonad
 	;;
 *)
-	exec $DEFAULT_SESSION
+	exec ck-launch-session dbus-launch --sh-syntax --exit-with-session $1
 	;;
 esac
+
+
+

@@ -1,0 +1,10 @@
+ibus-daemon -x -r -d &
+syndaemon -k -i 2 -d &
+urxvtd &
+udiskie &
+autocutsel -fork &
+autocutsel -selection PRIMARY -fork &
+dropboxd &
+#$HOME/.cabal/bin/xmobar .xmonad/xmobar-bottom.hs
+
+
