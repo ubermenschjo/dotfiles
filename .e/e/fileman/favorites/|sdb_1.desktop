@@ -1,9 +1,0 @@
-[Desktop Entry]
-Encoding=UTF-8
-Type=Link
-X-Enlightenment-Type=Removable
-X-Enlightenment-Removable-State=Full
-Name=storage
-Icon=drive-removable-media
-Comment=휴대용 장치
-URL=file://org/freedesktop/UDisks/devices/sdb1
