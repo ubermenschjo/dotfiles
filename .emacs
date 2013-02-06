@@ -170,15 +170,15 @@
 (when (require 'slime nil 'noerror)
   (slime-setup)
 
-(require 'clojure-mode)
-(setq clojure-swank-command
-  (if (or (locate-file "lein" exec-path) (locate-file "lein.bat" exec-path))
-    "lein ritz-in %s"
-    "echo \"lein ritz-in %s\" | $SHELL -l"))
-;(add-hook 'slime-mode-hook 'set-up-slime-ac)
-;(add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
-;(eval-after-load "auto-complete"
-;  '(add-to-list 'ac-modes 'slime-repl-mode))
+  (require 'clojure-mode)
+  (setq clojure-swank-command
+	(if (or (locate-file "lein" exec-path) (locate-file "lein.bat" exec-path))
+	    "lein ritz-in %s"
+	  "echo \"lein ritz-in %s\" | $SHELL -l"))
+					;(add-hook 'slime-mode-hook 'set-up-slime-ac)
+					;(add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
+					;(eval-after-load "auto-complete"
+					;  '(add-to-list 'ac-modes 'slime-repl-mode))
   (define-key slime-mode-map (kbd "TAB") 'slime-indent-and-complete-symbol))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -234,6 +234,7 @@
 ;;;; magit
 (autoload 'magit-status "magit" nil t)
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; global keybindings
 ;;
@@ -254,7 +255,6 @@
 		(lambda()(interactive)(goto-char(point-min))))
 (global-set-key (kbd "<C-next>")
 		(lambda()(interactive)(goto-char(point-max))))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -266,54 +266,47 @@
               (folding-mode . t)
               (outline-minor-mode . t)
               auto-recompile outline-minor-mode)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; bbdb & wanderlust
+(setq bbdb-file "~/.emacs.d/bbdb")
 
-;;; define categories that should be excluded
-(setq org-export-exclude-category (list  "google"))
+(require 'bbdb)
+(bbdb-initialize)
 
-;;; define filter. The filter is called on each entry in the agenda.
-;;; It defines a regexp to search for two timestamps, gets the start
-;;; and end point of the entry and does a regexp search. It also
-;;; checks if the category of the entry is in an exclude list and
-;;; returns either t or nil to skip or include the entry.
+(setq 
+ bbdb-offer-save 1                        ;; 1 means save-without-asking
+ bbdb-use-pop-up t                        ;; allow popups for addresses
+ bbdb-electric-p t                        ;; be disposable with SPC
+ bbdb-popup-target-lines  1               ;; very small
+ bbdb-dwim-net-address-allow-redundancy t ;; always use full name
+ bbdb-quiet-about-name-mismatches 2       ;; show name-mismatches 2 secs
+ bbdb-always-add-address t                ;; add new addresses to existing...
+ ;; ...contacts automatically
+ bbdb-canonicalize-redundant-nets-p t     ;; x@foo.bar.cx => x@bar.cx
+ bbdb-completion-type nil                 ;; complete on anything
+ bbdb-complete-name-allow-cycling t       ;; cycle through matches
+ ;; this only works partially
+ bbbd-message-caching-enabled t           ;; be fast
+ bbdb-use-alternate-names t               ;; use AKA
+ bbdb-elided-display t                    ;; single-line addresses
+ ;; auto-create addresses from mail
+ bbdb-mail-auto-create-p 'bbdb-ignore-some-messages-hook   
+ bbdb-ignore-some-messages-alist ;; don't ask about fake addresses
+ ;; NOTE: there can be only one entry per header (such as To, From)
+ ;; http://flex.ee.uec.ac.jp/texi/bbdb/bbdb_11.html
+ '(( "From" . "no.?reply\\|DAEMON\\|daemon\\|facebookmail\\|twitter")))
 
-(defun org-mycal-export-limit ()
-  "Limit the export to items that have a date, time and a range. Also exclude certain categories."
-  (setq org-tst-regexp "<\\([0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\} ... [0-9]\\{2\\}:[0-9]\\{2\\}[^\r\n>]*?\
-\)>")
-  (setq org-tstr-regexp (concat org-tst-regexp "--?-?" org-tst-regexp))
-  (save-excursion
-					; get categories
-    (setq mycategory (org-get-category))
-					; get start and end of tree
-    (org-back-to-heading t)
-    (setq mystart    (point))
-    (org-end-of-subtree)
-    (setq myend      (point))
-    (goto-char mystart)
-					; search for timerange
-    (setq myresult (re-search-forward org-tstr-regexp myend t))
-					; search for categories to exclude
-    (setq mycatp (member mycategory org-export-exclude-category))
-					; return t if ok, nil when not ok
-    (if (and myresult (not mycatp)) t nil)))
 
-;;; activate filter and call export function
-(defun org-mycal-export () 
-  (let ((org-icalendar-verify-function 'org-mycal-export-limit))
-    (org-export-icalendar-combine-agenda-files)))
-(setq org-icalendar-use-scheduled '(todo-start event-if-todo))
+(autoload 'wl "wl Wanderlust" t)
+(autoload 'wl-other-frame "wl" "Wanderlust on new frame." t)
+(autoload 'wl-draft "wl-draft" "Write draft with Wanderlust." t)
 
-;;;Remember The Milk
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; (setq org-feed-alist						      ;;
-;;       '(("Remember The Milk"					      ;;
-;; 	 "https://www.rememberthemilk.com/rss/ubermenschjo"	      ;;
-;; 	 "~/Dropbox/GTD/rtm.org"				      ;;
-;; 	 "Remember The Milk"					      ;;
-;; 	 :template "* TODO %title\n %a\n"			      ;;
-;; 	 )))							      ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;rtm feed timer
-					;(run-at-time 3600 3600 'org-feed-update-all)
+(require 'bbdb-wl)
+(bbdb-wl-setup)
 
+
+;(define-key wl-draft-mode-map (kbd "<C-tab>") 'bbdb-complete-name)
+(add-hook 'wl-draft-mode-hook
+          (lambda ()
+	    (define-key wl-draft-mode-map (kbd "<C-tab>") 'bbdb-complete-name)))
