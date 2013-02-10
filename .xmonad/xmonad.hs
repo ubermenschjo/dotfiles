@@ -52,6 +52,7 @@ myManageHook = composeAll
     [ className =? "Google-chrome"  --> doShift "2:web"
     , resource  =? "desktop_window" --> doIgnore
     , className =? "Emacs"     --> doShift "3:code"
+    , className =? "Firefox"     --> doShift "2:web"
     , className =? "Deluge"     --> doShift "9"                   
     , className =? "Gimp"           --> doFloat
     , className  =? "Vlc"       --> doFloat
