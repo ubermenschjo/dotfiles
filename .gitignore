@@ -10,3 +10,9 @@ tramp
 # Org-mode
 .org-id-locations
 *_archive
+
+/.Xauthority
+/.emacs.d
+/.cabal
+.pid
+/.*/**
