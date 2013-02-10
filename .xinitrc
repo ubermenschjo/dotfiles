@@ -3,7 +3,7 @@ setxkbmap -option terminate:ctrl_alt_bksp &
 xsetroot -cursor_name left_ptr &
 
 usermodmap=$HOME/.Xmodmap
-userresources=$HOME/.Xresources
+userresources=$HOME/.Xresources.zenburn
 
 if [ -f "$userresources" ]; then
     xrdb -merge "$userresources"
@@ -20,6 +20,8 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
 	unset f
 fi
 
+systemd --user &
+
 [ -f /etc/xprofile ] && . /etc/xprofile
 [ -f ~/.xprofile ] && . ~/.xprofile
 
@@ -29,31 +31,31 @@ DEFAULT_SESSION=dswm
 
 case $1 in
 enlightenment)
-	exec ck-launch-session  dbus-launch --sh-syntax --exit-with-session enlightenment_start
+	exec enlightenment_start
 	;;
 kde)
-	exec ck-launch-session  dbus-launch --sh-syntax --exit-with-session startkde
+	exec startkde
 	;;
 gnome)
-	exec ck-launch-session  dbus-launch --sh-syntax --exit-with-session gnome-session
+	exec gnome-session
 	;;
 cinnamon)
-	exec ck-launch-session  dbus-launch --sh-syntax --exit-with-session gnome-session-cinnamon
+	exec gnome-session-cinnamon
 	;;
 DSWM)
-	exec ck-launch-session  dbus-launch --sh-syntax --exit-with-session dswm --userinit $HOME/.dswm.d/init.lisp
+	exec dswm --userinit $HOME/.dswm.d/init.lisp
 	;;
 compiz)
-	exec ck-launch-session  dbus-launch --sh-syntax --exit-with-session /home/ubermenschjo/bin/start-compiz.sh 
+	exec /home/ubermenschjo/bin/start-compiz.sh 
 	;;
 xmonad)
 	PATH=$PATH:~/.cabal/bin:~/.xmonad/bin
 	tray &
 	$HOME/.cabal/bin/xmobar $HOME/.xmonad/xmobar-bottom.hs &
-	exec ck-launch-session dbus-launch --sh-syntax --exit-with-session xmonad
+	exec xmonad
 	;;
 *)
-	exec ck-launch-session dbus-launch --sh-syntax --exit-with-session $1
+	exec $1
 	;;
 esac
 

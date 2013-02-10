@@ -1,0 +1,9 @@
+[Unit]
+Description = MPD Scribbler
+
+[Service]
+ExecStart = /usr/bin/mpdscribble -D --conf /home/ubermenschjo/.mpdscribble/mpdscribble.conf
+Restart = always
+
+[Install]
+WantedBy = default.target
