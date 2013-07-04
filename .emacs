@@ -5,16 +5,16 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
-;;;; '(custom-theme-directory "~/.emacs.d/elpa/")
- '(package-user-dir "~/.emacs.d/elpa")
  '(display-battery-mode t)
  '(display-time-mode t)
  '(global-auto-revert-mode t)
  '(ido-mode 1 nil (ido))
- '(org-agenda-files (quote ("~/Dropbox/GTD/life.org" "~/Dropbox/GTD/mirae-dev.org" "~/Dropbox/GTD/index.org" "~/Dropbox/GTD/rtm.org" "~/Dropbox/GTD/private-dev.org" "~/Dropbox/GTD/knou.org" "~/Dropbox/GTD/gcal.org")))
+ '(org-agenda-files (quote ("~/Dropbox/GTD/proj-vopier.org" "~/Dropbox/GTD/proj-vcall.org" "~/Dropbox/GTD/proj-escort.org" "~/Dropbox/GTD/proj-campaign.org" "~/Dropbox/GTD/index.org" "~/Dropbox/GTD/private-dev.org" "~/Dropbox/GTD/knou.org" "~/Dropbox/GTD/gcal.org")))
+ '(package-user-dir "~/.emacs.d/elpa")
  '(safe-local-variable-values (quote ((todo-categories "dev" "Todo"))))
  '(size-indication-mode t)
  '(text-mode-hook (quote (turn-on-auto-fill text-mode-hook-identify)))
+ '(tramp-chunksize 500)
  '(uniquify-buffer-name-style (quote forward) nil (uniquify)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -78,7 +78,8 @@
 (when (require 'tramp nil 'noerror)
   ;; we need a bit more funky pattern, as tramp will start $SHELL
   ;; (sudo -s), ie., zsh for root user
-  (setq shell-prompt-pattern "^[^a-zA-Z].*[#$%>] *")
+  (setq tramp-shell-prompt-pattern "^[^a-zA-Z].*[#$%>] *")
+  ;; (eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
   (setq
    tramp-default-method "ssh"
    tramp-persistency-file-name "~/.emacs.d/cache/tramp"))
@@ -225,7 +226,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; sauron
-(autoload 'sauron "sauron")
+;;;;(autoload 'sauron "sauron")
 
 (when (require 'zenburn-theme nil 'noerror))
 
@@ -244,7 +245,7 @@
 (global-set-key (kbd "M-g")         'goto-line)    ; M-g  'goto-line
 (global-set-key (kbd "C-c l") 'org-store-link)  ;; Links
 (global-set-key (kbd "C-c a") 'org-agenda)      ;; Agenda
-(global-set-key (kbd "C-x b") 'anything)      ;; Anything
+(global-set-key (kbd "C-x b") 'anything-at-point)      ;; Anything
 (global-set-key (kbd "C-x g") 'magit-status)	;; magit
 
 (when (fboundp 'ibuffer)
