@@ -78,7 +78,7 @@
 (when (require 'tramp nil 'noerror)
   ;; we need a bit more funky pattern, as tramp will start $SHELL
   ;; (sudo -s), ie., zsh for root user
-  (setq tramp-shell-prompt-pattern "^[^a-zA-Z].*[#$%>] *")
+  (setq shell-prompt-pattern "^[^a-zA-Z].*[#$%>] *")
   ;; (eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
   (setq
    tramp-default-method "ssh"

@@ -32,7 +32,7 @@ ZSH_THEME="robbyrussell"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git)
+plugins=(git archlinux cp extract git-extras git-flow github history mvn systemd tmux)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -42,6 +42,17 @@ export XMODIFIERS=@im=ibus
 export QT_IM_MODULE=ibus
 
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
+export JAVA_FONTS=/usr/share/fonts/TTF
+
 export PATH=$HOME/.cabal/bin:$PATH
 
-xmodmap $HOME/.Xmodmap
+# For emacs-tramp
+if [[ "$TERM" == "dumb" ]]
+then
+    unsetopt zle
+    unsetopt prompt_cr
+    unsetopt prompt_subst
+    unfunction precmd
+    unfunction preexec
+    PS1='> '
+fi
