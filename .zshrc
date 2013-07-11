@@ -42,6 +42,10 @@ export XMODIFIERS=@im=ibus
 export QT_IM_MODULE=ibus
 
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
-export PATH=$HOME/.cabal/bin:$PATH
+export JAVA_FONTS=/usr/share/fonts/TTF
+export PATH=$HOME/.cabal/bin:$HOME/bin:$PATH
+export EDITOR=vi
 
-xmodmap $HOME/.Xmodmap
+alias ssh-x='ssh -Y -C -o CompressionLevel=9 -c arcfour,blowfish-cbc'
+
+#xmodmap $HOME/.Xmodmap

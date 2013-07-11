@@ -5,13 +5,12 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
-;;;; '(custom-theme-directory "~/.emacs.d/elpa/")
- '(package-user-dir "~/.emacs.d/elpa")
  '(display-battery-mode t)
  '(display-time-mode t)
  '(global-auto-revert-mode t)
  '(ido-mode 1 nil (ido))
  '(org-agenda-files (quote ("~/Dropbox/GTD/life.org" "~/Dropbox/GTD/mirae-dev.org" "~/Dropbox/GTD/index.org" "~/Dropbox/GTD/rtm.org" "~/Dropbox/GTD/private-dev.org" "~/Dropbox/GTD/knou.org" "~/Dropbox/GTD/gcal.org")))
+ '(package-user-dir "~/.emacs.d/elpa")
  '(safe-local-variable-values (quote ((todo-categories "dev" "Todo"))))
  '(size-indication-mode t)
  '(text-mode-hook (quote (turn-on-auto-fill text-mode-hook-identify)))
@@ -35,7 +34,7 @@
 (when (file-exists-p "~/.emacs.d/elpa/package.el")
   (when (load (expand-file-name "~/.emacs.d/elpa/package.el"))
     (package-initialize)))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; elpa
@@ -43,6 +42,7 @@
 			 ("marmalade" . "http://marmalade-repo.org/packages/")
 			 ("melpa" . "http://melpa.milkbox.net/packages/")))
 (package-initialize)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; general setting
 (setq completion-ignore-case t           ;; ignore case when completing...
@@ -53,6 +53,7 @@
 (setq org-log-done t)
 
 (setq inferior-lisp-program "/usr/bin/sbcl")
+
 ;; backups
 (setq make-backup-files t ;; do make backups
       backup-by-copying t     ;; and copy them here
@@ -82,18 +83,20 @@
   (setq
    tramp-default-method "ssh"
    tramp-persistency-file-name "~/.emacs.d/cache/tramp"))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; yas-snippet
 (setq yas-global-mode t)
 (setq yas-minor-mode t)
-(setq yas-snippet-dirs "/home/ubermenschjo/.emacs.d/elpa/yasnippet-20120923.1126/snippets")
+(setq yas-snippet-dirs "/home/ubermenschjo/.emacs.d/snippets")
 (when (require 'dropdown-list nil 'noerror)
+  (require 'yasnippet)
   (setq yas-prompt-functions '(yas-dropdown-prompt
 			       yas-ido-prompt
 			       yas-completing-prompt)))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; auctex
@@ -145,15 +148,13 @@
 	"pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
 	"pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; auto-install
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/elpa/auto-install"))
 (when (require 'auto-install nil 'noerror)
   (setq auto-install-directory "~/.emacs.d/elpa/auto-install/"))
 					;(auto-install-update-emacswiki-package-name t)
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 
@@ -165,6 +166,8 @@
   (ac-config-default)
   (global-auto-complete-mode t))
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; ac-slime
 (load (expand-file-name "~/quicklisp/slime-helper.el") t t t)
 (when (require 'slime nil 'noerror)
@@ -180,6 +183,7 @@
 					;(eval-after-load "auto-complete"
 					;  '(add-to-list 'ac-modes 'slime-repl-mode))
   (define-key slime-mode-map (kbd "TAB") 'slime-indent-and-complete-symbol))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; jabber
@@ -200,6 +204,7 @@
 (add-hook 'scheme-mode-hook           (lambda () (paredit-mode +1)))
 (add-hook 'slime-repl-mode-hook (lambda () (paredit-mode +1)))
 (add-hook 'clojure-mode-hook (lambda() (paredit-mode +1)))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; haskell-mode
