@@ -8,15 +8,16 @@
 
 -- {{{ Required Libraries
 
-gears 	        = require("gears")
-awful           = require("awful")
+local gears 	        = require("gears")
+local awful           = require("awful")
 awful.rules     = require("awful.rules")
 awful.autofocus = require("awful.autofocus")
-wibox           = require("wibox")
-beautiful       = require("beautiful")
-naughty         = require("naughty")
-vicious         = require("vicious")
-scratch         = require("scratch")
+local wibox           = require("wibox")
+local beautiful       = require("beautiful")
+local naughty         = require("naughty")
+local vicious         = require("vicious")
+local scratch         = require("scratch")
+local yawn            = require("yawn")
 
 -- }}}
 
@@ -135,10 +136,11 @@ end
 -- Define a tag table which hold all screen tags.
 tags = {
 --       names = { "1", "2", "3", "4", "5"},
---  names = { "⠐", "⠡", "⠪", "⠵", "⠻", "⠿" },
-  names = { "⠐", "⠡", "⠪", "⠵", "⠻" },  
-  layout = { layouts[1], layouts[4], layouts[3], layouts[1], layouts[7]}
-       }
+  names = { "⠐", "⠡", "⠪", "⠵", "⠻", "⠿" },
+--  names = { "⠐", "⠡", "⠪", "⠵", "⠻" },  
+--  layout = { layouts[1], layouts[4], layouts[3], layouts[1], layouts[7]}
+  layout = { layouts[1], layouts[4], layouts[3], layouts[1], layouts[7], layouts[7]}
+}
 for s = 1, screen.count() do
 -- Each screen has its own tag table.
    tags[s] = awful.tag(tags.names, s, tags.layout)
@@ -518,10 +520,13 @@ end, 1, "Master")
 
 -- Net widget
 netwidget = wibox.widget.textbox()
-vicious.register(netwidget, vicious.widgets.net, '<span background="#313131" font="Terminus 13" rise="2000"> <span font="Terminus 9" color="#7AC82E">${wlan0 down_kb}</span> <span font="Terminus 7" color="#EEDDDD">↓↑</span> <span font="Terminus 9" color="#46A8C3">${eth0 up_kb} </span></span>', 3)
+vicious.register(netwidget, vicious.widgets.net, '<span background="#313131" font="Terminus 13" rise="2000"> <span font="Terminus 9" color="#7AC82E">${eth0 down_kb}</span> <span font="Terminus 7" color="#EEDDDD">↓↑</span> <span font="Terminus 9" color="#46A8C3">${eth0 up_kb} </span></span>', 3)
 neticon = wibox.widget.imagebox()
 neticon:set_image(beautiful.widget_net)
 netwidget:buttons(awful.util.table.join(awful.button({ }, 1, function () awful.util.spawn_with_shell(iptraf) end)))
+
+-- Weather widget
+yawn.register(1132599) -- https//github.com/copycat-killer/yawn
 
 -- Separators
 spr = wibox.widget.textbox(' ')
@@ -646,6 +651,9 @@ for s = 1, screen.count() do
     right_layout:add(neticon)
     right_layout:add(netwidget)
     right_layout:add(arrl_dl)
+    right_layout:add(yawn.icon)
+    right_layout:add(yawn.widget)
+--    right_layout:add(arrl_ld)
     right_layout:add(mytextclock)
     right_layout:add(spr)
     right_layout:add(arrl_ld)
@@ -737,7 +745,8 @@ globalkeys = awful.util.table.join(
 
     -- Widgets popups
     awful.key({ altkey,           }, "c",     function () add_calendar(7) end),
-
+    awful.key({ altkey,           }, "w",     function () yawn.show_weather(5) end),
+    
     -- Volume control
     awful.key({ "Control" }, "Up", function ()
                                        awful.util.spawn("amixer set Master playback 1%+", false )
