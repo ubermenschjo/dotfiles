@@ -2,10 +2,7 @@
 # font
 #.......
 
-#font -*-cure-medium-*-*-*-11-*-*-*-*-*-*-*
-font xft:Daramgee:fixelsize=4,xft:Kochi-mincho-subst:antialias=false
-#font fixed
-#font -*-anorexia-medium-*-*-*-11-*-*-*-*-*-iso10646-1
+font xft:Terminus
 
 #..........
 # windows
@@ -26,7 +23,7 @@ client.urgent           #cd989a #cd989a #2e3436
 client.background       #121212
 
 
-set $mod Mod4
+set $mod Mod1
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
@@ -39,7 +36,7 @@ bindsym $mod+Return exec urxvtc
 # kill focused window
 bindsym $mod+q kill
 # start dmenu (a program launcher)
-bindsym Mod4+p exec dmenu_run -fn  "-*-cure-medium-*-*-*-11-*-*-*-*-*-*-*" -nb "#101010" -nf "#5f5f5f" -sb "#191919" -sf "#b72f62" -b
+bindsym $mod+p exec dmenu_run -fn  "-*-cure-medium-*-*-*-11-*-*-*-*-*-*-*" -nb "#101010" -nf "#5f5f5f" -sb "#191919" -sf "#b72f62" -b
 
 # change focus
 bindsym $mod+j focus left
@@ -48,22 +45,22 @@ bindsym $mod+i focus up
 bindsym $mod+l focus right
 
 # alternatively, you can use the cursor keys:
-bindsym $mod+Left focus left
-bindsym $mod+Down focus down
-bindsym $mod+Up focus up
-bindsym $mod+Right focus right
+#bindsym $mod+Left focus left
+#bindsym $mod+Down focus down
+#bindsym $mod+Up focus up
+#bindsym $mod+Right focus right
 
 # move focused window
 bindsym $mod+Shift+j move left
 bindsym $mod+Shift+k move down
-bindsym $mod+Shift+l move up
-bindsym $mod+Shift+i move right
+bindsym $mod+Shift+i move up
+bindsym $mod+Shift+l move right
 
 # alternatively, you can use the cursor keys:
-bindsym $mod+Shift+Left move left
-bindsym $mod+Shift+Down move down
-bindsym $mod+Shift+Up move up
-bindsym $mod+Shift+Right move right
+#bindsym $mod+Shift+Left move left
+#bindsym $mod+Shift+Down move down
+#bindsym $mod+Shift+Up move up
+#bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
 bindsym $mod+h split h
@@ -75,9 +72,9 @@ bindsym $mod+v split v
 bindsym $mod+f fullscreen
 
 # change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
-bindsym $mod+w layout tabbed
-bindsym $mod+e layout toggle split
+bindsym $mod+Shift+u layout stacking
+bindsym $mod+Shift+o layout tabbed
+bindsym $mod+Shift+p layout toggle split
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
@@ -116,7 +113,7 @@ bindsym $mod+Shift+q exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 
 
 #Screenshot
-bindsym $mod+0xff57 exec scrot  ~/Pictures/Screenshots/screenshot_%Y_%m_%d_%H_%M_%S.png
+#bindsym $mod+0xff57 exec scrot  ~/Pictures/Screenshots/screenshot_%Y_%m_%d_%H_%M_%S.png
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -149,12 +146,6 @@ bindsym $mod+r mode "resize"
 bar {
 mode dock
 position top
-#	font -*-cure-medium-*-*-*-11-*-*-*-*-*-*-*
-#	font xft:Bitstream Vera Sans mono:size=5,xft:Daramgee:fixelsize=6,xft:Kochi-mincho-subst:antialias=false
-#	font xft:Terminus:pixelsize=4,xft:Daramgee:fixelsize=6,xft:Kochi-mincho-subst:antialias=false
-#	font -misc-fixed-medium-c-normal--12-120-75-75-C-70-iso10646-1
-#font -*-anorexia-medium-*-*-*-11-*-*-*-*-*-iso10646-1
-font xft:Daramgee:fixelsize=4,xft:Kochi-mincho-subst:antialias=false
 workspace_buttons yes
 status_command ~/.i3/conky.sh
 #   tray_output none

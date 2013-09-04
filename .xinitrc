@@ -24,7 +24,7 @@ fi
 
 [ -f /etc/xprofile ] && . /etc/xprofile
 [ -f $HOME/.xprofile ] && . $HOME/.xprofile
-[ -f $HOME/.xrandrrc] && . $HOME/.xrandrrc
+[ -f $HOME/.xrandrrc ] && . $HOME/.xrandrrc
 
 eval $($HOME/.fehbg)
 
@@ -71,9 +71,8 @@ DSWM)
 	exec dswm --userinit $HOME/.dswm.d/init.lisp
 	;;
 compiz)
-	#cairo-dock -o &
-	#exec compiz ccp --sm-disable &
-	exec $HOME/bin/start-compiz.sh
+	exec compiz ccp 
+	#exec $HOME/bin/start-compiz.sh
 	;;
 xmonad)
 	PATH=$PATH:$HOME/.cabal/bin:$HOME/.xmonad/bin
