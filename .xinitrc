@@ -42,6 +42,9 @@ awesome-multicolor)
 DSWM)
 	exec dswm --userinit $HOME/.dswm.d/init.lisp
 	;;
+stumpwm)
+	exec stumpwm
+	;;
 compiz)
 	exec compiz ccp
 	#exec $HOME/bin/start-compiz.sh
