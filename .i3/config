@@ -141,6 +141,12 @@ bindsym Escape mode "default"
 
 bindsym $mod+r mode "resize"
 
+# application shortcut hack
+mode "passthrough" {
+	bindsym $mod+0 mode "default"
+}
+bindsym $mod+9 mode "passthrough"
+
 #Status bar
 
 bar {
