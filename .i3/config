@@ -86,6 +86,16 @@ bindsym $mod+space focus mode_toggle
 bindsym $mod+a focus parent
 
 # focus the child container
+bindsym $mod+c focus child
+
+# Make the currently focused window a scratchpad
+bindsym $mod+Shift+minus move scratchpad
+
+# Show the first scratchpad window
+bindsym $mod+minus scratchpad show
+
+
+# focus the child container
 #bindsym $mod+d focus child
 #   names = { "⠐", "⠡", "⠪", "⠵", "⠻", "⠿" },
 # switch to workspace
@@ -143,7 +153,7 @@ bindsym $mod+r mode "resize"
 
 # application shortcut hack
 mode "passthrough" {
-	bindsym $mod+0 mode "default"
+bindsym $mod+0 mode "default"
 }
 bindsym $mod+9 mode "passthrough"
 
