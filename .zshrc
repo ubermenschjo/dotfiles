@@ -50,7 +50,7 @@ alias ssh-x='ssh -Y -C -o CompressionLevel=9 -c arcfour,blowfish-cbc'
 
 #xmodmap $HOME/.Xmodmap
 
-export PATH=$HOME/.cabal/bin:$PATH
+export PATH=$HOME/.cabal/bin:$HOME/bin:$PATH
 
 # For emacs-tramp
 if [[ "$TERM" == "dumb" ]]

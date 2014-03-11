@@ -14,7 +14,7 @@ URxvt.keysym.M-C-c:         perl:clipboard:copy
 URxvt.keysym.M-C-v:         perl:clipboard:paste
 
 !URxvt*font: xft:Envy Code R:pixelsize=10
-URxvt*font: xft:Bitstream Vera Sans mono:size=9,xft:Daramgee:fixelsize=10,xft:Kochi-mincho-subst:antialias=false,xft:Envy Code R:pixelsize=10
+URxvt*font: xft:Daramgee:fixelsize=8,xft:Bitstream Vera Sans mono:size=9,xft:Kochi-mincho-subst:antialias=false,xft:Envy Code R:pixelsize=10
 *foreground: #d2d2ca
 *background: #2f2f2f
 !Black

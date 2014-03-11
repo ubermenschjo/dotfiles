@@ -58,7 +58,7 @@ URxvt*fading:	        	10 !term unfocus
 !URxvt.font:				xft:Consolas:pixelsize=16
 !URxvt.font:					xft:Monospace:pixelsize=21
 !URxvt.font:  				xft:matto:antialias=true:size=8
-URxvt.font:				xft:Bitstream Vera Sans mono:size=9,xft:Daramgee:fixelsize=10,xft:Kochi-mincho-subst:antialias=false
+URxvt.font:				xft:Daramgee:fixelsize=8,xft:Bitstream Vera Sans mono:size=9,xft:Kochi-mincho-subst:antialias=false
 URxvt*scrollBar:		false
 URxvt*scrollWithBuffer:		true
 URxvt*scrollBar_floating:	true
