@@ -11,6 +11,6 @@
 (live-load-config-file "bindings.el")
 (live-load-config-file "elpa.el")
 (live-load-config-file "setq.el")
-(live-load-config-file "dotshare.el")
+;(live-load-config-file "dotshare.el")
 (live-load-config-file "java.el")
 ;(live-load-config-file "hooks.el")

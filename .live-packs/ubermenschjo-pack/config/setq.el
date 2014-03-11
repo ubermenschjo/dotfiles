@@ -10,3 +10,6 @@
       delete-old-versions t)
 
 (setq inferior-lisp-program "/usr/bin/sbcl")
+
+;;; input-method
+(setq default-input-method "korean-hangul")
