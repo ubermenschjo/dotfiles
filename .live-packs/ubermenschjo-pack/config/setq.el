@@ -13,3 +13,8 @@
 
 ;;; input-method
 (setq default-input-method "korean-hangul")
+
+;;; MobileOrg
+(setq org-directory "~/org")
+(setq org-mobile-inbox-for-pull "~/org/flagged.org")
+(setq org-mobile-directory "~/Dropbox/GTD/MobileOrg")
