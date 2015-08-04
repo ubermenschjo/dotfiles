@@ -11,8 +11,9 @@ override_utf8_locale yes
 TEXT
 
 # [{ "full_text" : "MPD" , "color" : "\#b72f62" } ,
-[{ "full_text" : "Now playing" , "color" : "\#b72f62" } ,
- { "full_text" : "${if_mpd_playing}${mpd_smart 50} ${mpd_elapsed}/${mpd_length}${else}${execi 300 (python2 ~/lastfm.py)}${endif}" } ,
+[
+#{ "full_text" : "Now playing" , "color" : "\#b72f62" } ,
+# { "full_text" : "${if_mpd_playing}${mpd_smart 50} ${mpd_elapsed}/${mpd_length}${else}${execi 300 (python2 ~/lastfm.py)}${endif}" } ,
 # { "full_text" : "${execi 30 (python2 ~/lastfm.py)}" } ,
 { "full_text" : "Cpu" , "color" : "\#7996a9" } ,
 # { "full_text" : "${cpubar cpu0 5 20}" },
